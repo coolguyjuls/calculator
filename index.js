@@ -19,27 +19,27 @@ const calculatorDisplay = document.getElementById("displayText")
 
 
 let operation = '';
-let calculatorArray= [];
-let arrayX =``;
-let arrayY = ``;
+let valueStoreX =``;
+let valueStoreY = ``;
 let operatorCheck = false;
 
 // button1.addEventListener("click", ()=> calculatorArray.push(1))
+button9.addEventListener("click", ()=> test(9))
+// button2.addEventListener("click", ()=> calculatorArray.push(2))
+button8.addEventListener("click", ()=> test(8))
+button7.addEventListener("click", ()=> test(7))
+button6.addEventListener("click", ()=> test(6))
+button5.addEventListener("click", ()=> test(5))
+button4.addEventListener("click", ()=> test(4))
+button3.addEventListener("click", ()=> test(3))
+button2.addEventListener("click", ()=> test(2))
 button1.addEventListener("click", ()=> test(1))
-button2.addEventListener("click", ()=> calculatorArray.push(2))
-button3.addEventListener("click", ()=> calculatorArray.push(3))
-button4.addEventListener("click", ()=> calculatorArray.push(4))
-button5.addEventListener("click", ()=> calculatorArray.push(5))
-button6.addEventListener("click", ()=> calculatorArray.push(6))
-button7.addEventListener("click", ()=> calculatorArray.push(7))
-button8.addEventListener("click", ()=> calculatorArray.push(8))
-button9.addEventListener("click", ()=> calculatorArray.push(9))
-button0.addEventListener("click", ()=> calculatorArray.push(0))
+button0.addEventListener("click", ()=> test(0))
 // buttonMultiply.addEventListener("click", ()=> operation = `*`)
 buttonMultiply.addEventListener("click", ()=> operatorSet(`*`))
-buttonDivide.addEventListener("click", ()=> operation = `/`)
-buttonAdd.addEventListener("click", ()=> operation = `+`)
-buttonSubtract.addEventListener("click", ()=> operation = `-`)
+buttonDivide.addEventListener("click", ()=> operatorSet(`/`))
+buttonAdd.addEventListener("click", ()=> operatorSet(`+`))
+buttonSubtract.addEventListener("click", ()=> operatorSet(`-`))
 // buttonEnter.addEventListener("click", inputOperation)
 buttonEnter.addEventListener("click", executionCheck)
 
@@ -48,21 +48,27 @@ function test(num){
     console.log(`test function here`);
     
     if (operatorCheck === false){
-        arrayX += (num);
-        console.log(`arrayX check 1, ${arrayX}`);
+        if (valueStoreX >0){
+            valueStoreX =0;
+        }
+        valueStoreX += (num);
+        console.log(`valuestoreX check 1, ${valueStoreX}`);
         console.log(operatorCheck);
+        calculatorDisplay.innerText = String(valueStoreX)
         
         
     } else if (operatorCheck === true){
-        arrayY += (num);
-        console.log(`arrayY check 1, ${arrayY}`);
+        valueStoreY += (num);
+        console.log(`valuestoreY check 1, ${valueStoreY}`);
+        calculatorDisplay.innerText += ` `+ String(valueStoreY)
     }
 }
 
 function operatorSet(operation){
     operator = operation;
     operatorCheck = true;
-    console.log(`operatorSet fucntion check : ${operator}`);
+    console.log(`operatorSet function check : ${operator}`);
+    calculatorDisplay.innerText += ` ${operator}`
     return operator;
     
 }
@@ -70,14 +76,13 @@ function operatorSet(operation){
 
 function executionCheck(){
     let result;
-    let x = Number(arrayX);
-    let y = Number(arrayY);
+    let x = Number(valueStoreX);
+    let y = Number(valueStoreY);
      
     if (operatorCheck === true){
 
         switch (operator) {
             case `*`: result = x * y ;
-            console.log(`execution check 1: ${result}`)
             break;
             case `/`: result = x / y;
             break;
@@ -86,35 +91,17 @@ function executionCheck(){
             case `-`: result = x - y;
             break;
         }
-        console.log(`execution check 2: ${result}`)
     }
     console.log(`execution check 3: ${result}`)
-}
+    operatorCheck = false;
+    valueStoreX = result;
+    valueStoreY = 0;
+    operator = ``
+    calculatorDisplay.innerText = String(result)
 
-
-for (i = 0; calculatorArray[i]; i++){
-    numberString = calculatorArray.toString(calculatorArray[i])
-}
-
-function inputOperation(){
-    x = calculatorArray[0];
-    console.log(x);
-    y = calculatorArray[1];
-    console.log(y);
-
-    switch (operation) {
-        case `*`: result = x * y;
-        break;
-        case `/`: result = x / y;
-        break;
-        case `+`: result = x + y;
-        break;
-        case `-`: result = x - y;
-        break;
-    }
-
-    calculatorDisplay.innerText = `${x} ${operation} ${y} = ${result}`;
-    console.log(calculatorArray);
-    console.log(operation)
-    console.log(calculatorDisplay)
+    console.log(`valueStoreX:`, valueStoreX);
+    console.log(`valueStoreY:`, valueStoreY);
+    console.log(`operator:`, operator);
+    
+    
 }
