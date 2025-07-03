@@ -13,6 +13,7 @@ const buttonDivide = document.getElementById("buttonDivide")
 const buttonAdd = document.getElementById("buttonAdd")
 const buttonSubtract = document.getElementById("buttonSubtract")
 const buttonEnter = document.getElementById("buttonEnter")
+const buttonClear = document.getElementById("buttonClear")
 
 const calculatorDisplay = document.getElementById("displayText")
 
@@ -31,6 +32,7 @@ buttonDivide.addEventListener("click", ()=> operatorSet(`/`))
 buttonAdd.addEventListener("click", ()=> operatorSet(`+`))
 buttonSubtract.addEventListener("click", ()=> operatorSet(`-`))
 buttonEnter.addEventListener("click", executionCheck)
+buttonClear.addEventListener("click", clearButton)
 
 
 let operation = '';
@@ -47,6 +49,9 @@ buttonEnter.disabled = true;
 resultEqualToA = false;
 
 
+// +++++++++++++++++++++++++++++++++++++++++++++++++//
+let displayArray = [];
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
 function test(string){
     console.log(`test function here`);
@@ -60,9 +65,21 @@ function test(string){
             console.log(`stringA check: `, stringA)
             console.log(string)
 
+
+// +++++++++++++++++++++++++++++++++++++Test Array Herer ----------------//
+            displayArray.push(stringA);
+            console.log(`stringA array check :`, displayArray);
+// -+++++++++++++++++++++++++++++++++++++++---------------------------------//
+
+
         } else if (resultEqualToA != true){
             stringA += string;
             calculatorDisplay.innerText = stringA
+
+// +++++++++++++++++++++++++++++++++Test Array Herer ---++++++++++-------------//
+            displayArray[0] = stringA;
+            console.log(`stringA array check :`, displayArray);
+// --------------------------------++++++++++++++++++++++++++++++++++++++++++--//
             
             
             console.log(`stringA check, ${stringA}`);
@@ -79,6 +96,11 @@ function test(string){
         buttonEnter.disabled = false;
 
 
+//--------- Test Array Herer ----------------------------------------------------//
+        displayArray.push(stringB);
+        console.log(`stringB array check :`, displayArray);
+// ------------------------------------------------------------------------------//
+
         console.log(`stringB check, ${stringB}`);
         console.log(`operator check 1: ${operatorCheck}`);
         console.log(`result equal to A check 2: ${resultEqualToA}`);
@@ -90,7 +112,10 @@ function operatorSet(operation){
     operatorCheck = true;
     calculatorDisplay.innerText = `${stringA} ${operator} `;
     
-
+// ----------------------Test Array Herr --------------------------------//
+    displayArray.push(operator);
+    console.log(`operator array check :`, displayArray);
+//------------------------------------------------------------------------//
 
     console.log(`operatorSet function check : ${operator}`);
     console.log(`result equal to A check 3: ${resultEqualToA}`);
@@ -136,6 +161,7 @@ function executionCheck(){
         calculatorDisplay.innerText = `Error`
         stringA = 0;
         resultEqualToA = false;
+        buttonClear.innerText = `AC`
     } else{
         calculatorDisplay.innerText = stringA;
         resultEqualToA = true;
@@ -150,7 +176,41 @@ function executionCheck(){
     
 }
 
-
 function clearButton(){
     //disables operator buttons. resets values.
+    if (calculatorDisplay.innerText === `Error`){
+        stringA = ``;
+        result = 0;
+        calculatorDisplay.innerText = ``
+        buttonClear.innerText = `AC`
+    }
+    if (stringB.length > 0){
+        buttonClear.innerText = `CE`
+        stringB = ``;
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        displayArray.pop()
+        console.log(`popped stringB from array display`, displayArray)
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+
+    } else if (operator.length > 0){
+        operatorCheck = false;buttonClear.innerText = `CE`
+        operator = '';
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        displayArray.pop()
+        console.log(`popped operator from array display`, displayArray)
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+
+    } else if (stringA.length > 0){
+        buttonClear.innerText = `AC`
+        stringA = ``;
+        operatorCheck = false;
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        displayArray.pop()
+        console.log(`popped stringA from array display`, displayArray)
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+    }
+
+    
 }
