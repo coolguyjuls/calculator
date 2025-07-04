@@ -16,6 +16,7 @@ const buttonEnter = document.getElementById("buttonEnter")
 const buttonClear = document.getElementById("buttonClear")
 
 const calculatorDisplay = document.getElementById("displayText")
+const calculatorDisplay2 = document.getElementById("displayText2")
 
 button9.addEventListener("click", ()=> test(`9`))
 button8.addEventListener("click", ()=> test(`8`))
@@ -34,28 +35,29 @@ buttonSubtract.addEventListener("click", ()=> operatorSet(`-`))
 buttonEnter.addEventListener("click", executionCheck)
 buttonClear.addEventListener("click", clearButton)
 
-
 let operation = '';
 let stringA =``;
 let stringB = ``;
-let a;
-let b;
+let operator = ``;
 
 // variable check for switching between setting the value for stringA and string B. False: stringA. True: stringB.
 let operatorCheck = false;
 // Disables button to make sure variables a and b will have values before being allowed to move onto the execution function.
 buttonEnter.disabled = true;
 // if false, numbers entered will concatenate. If true, the first variable is already initialized with the value from result, and a number entered afterwards will clear it out.
-resultEqualToA = false;
-
+let resultEqualToA = false;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++//
 let displayArray = [];
+let ErrorCheck = false;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
 function test(string){
     console.log(`test function here`);
-    
+    if (ErrorCheck === true){
+        return;
+    }
+
     if (operatorCheck === false){
 
         if (resultEqualToA === true){
@@ -67,8 +69,10 @@ function test(string){
 
 
 // +++++++++++++++++++++++++++++++++++++Test Array Herer ----------------//
-            displayArray.push(stringA);
+            displayArray[0] = (stringA);
             console.log(`stringA array check :`, displayArray);
+            // updateDisplay(stringA);
+            updateDisplay();
 // -+++++++++++++++++++++++++++++++++++++++---------------------------------//
 
 
@@ -78,7 +82,9 @@ function test(string){
 
 // +++++++++++++++++++++++++++++++++Test Array Herer ---++++++++++-------------//
             displayArray[0] = stringA;
-            console.log(`stringA array check :`, displayArray);
+            console.log(`stringA array check 2:`, displayArray);
+            // updateDisplay(stringA);
+            updateDisplay();
 // --------------------------------++++++++++++++++++++++++++++++++++++++++++--//
             
             
@@ -97,24 +103,33 @@ function test(string){
 
 
 //--------- Test Array Herer ----------------------------------------------------//
-        displayArray.push(stringB);
+        // displayArray.push(stringB);
+        displayArray.splice(2,1, stringB)
         console.log(`stringB array check :`, displayArray);
+        // updateDisplay(stringB);
+        updateDisplay();
 // ------------------------------------------------------------------------------//
 
         console.log(`stringB check, ${stringB}`);
         console.log(`operator check 1: ${operatorCheck}`);
         console.log(`result equal to A check 2: ${resultEqualToA}`);
     }
+    updateDisplay();
 }
 
 function operatorSet(operation){
+    if (ErrorCheck === true){
+        return;
+    }
     operator = operation;
     operatorCheck = true;
     calculatorDisplay.innerText = `${stringA} ${operator} `;
     
-// ----------------------Test Array Herr --------------------------------//
-    displayArray.push(operator);
+// ----------------------Test Array Here --------------------------------//
+    // displayArray.push(operator);
+    // displayArray.splice(1,1, operator);
     console.log(`operator array check :`, displayArray);
+    updateDisplay(operator);
 //------------------------------------------------------------------------//
 
     console.log(`operatorSet function check : ${operator}`);
@@ -123,17 +138,17 @@ function operatorSet(operation){
     
 }
 
-function infinityCheck(){
-    if (stringA == Infinity){
+// function infinityCheck(){
+//     if (stringA == Infinity){
         
-    }
-}
+//     }
+// }
 
 function executionCheck(){
     let result;
     let a = Number(stringA);
     let b = Number(stringB);
-     
+    
     if (operatorCheck === true){
 
         switch (operator) {
@@ -150,23 +165,33 @@ function executionCheck(){
         console.log(`pick a second number`)
     }
     console.log(`execution check 3: ${result}`)
+//new line here ---------------- reying it out.
+    if (b === 0 && operator === `/`){
+        stringA =``;
+        operator = ``;
+        stringB = ``;
+        displayArray[0] = `ERROR-PLEASE CLEAR`;
+        // let zero = `ERROR - Cannot Divide By Zero`
+        operatorCheck = false;
+        buttonEnter.disabled = true;
+        ErrorCheck = true;
+        console.log(`display arrray check id-111:`, displayArray);
+        updateDisplay();
+        return;
+    }
 
     operatorCheck = false;
-    a = result;
     stringA = String(result);
-    b = 0;
     operator = ``;
     stringB = ``;
-    if (stringA == Infinity){
-        calculatorDisplay.innerText = `Error`
-        stringA = 0;
-        resultEqualToA = false;
-        buttonClear.innerText = `AC`
-    } else{
-        calculatorDisplay.innerText = stringA;
-        resultEqualToA = true;
-    }
+
+    displayArray.splice(1);
+    console.log(`display array check`, displayArray);
+    resultEqualToA = true;
     buttonEnter.disabled = true;
+
+    updateDisplay();
+    console.log(`display array check`, displayArray);
 
     console.log(`stringA:`, stringA);
     console.log(`stringB:`, stringB);
@@ -176,41 +201,80 @@ function executionCheck(){
     
 }
 
+// for clear button display text +++++++++++++++++++++++++++++++
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 function clearButton(){
     //disables operator buttons. resets values.
-    if (calculatorDisplay.innerText === `Error`){
+
+    if (ErrorCheck === true){
+        ErrorCheck = false;
         stringA = ``;
-        result = 0;
-        calculatorDisplay.innerText = ``
-        buttonClear.innerText = `AC`
-    }
-    if (stringB.length > 0){
-        buttonClear.innerText = `CE`
         stringB = ``;
+        operator = ``;
+        operatorCheck = false;
+        resultEqualToA = false;
+        displayArray = [];
+        calculatorDisplay.innerText = "";
+        updateDisplay();
+    }
+
+    if (stringB.length > 0){
+        stringB = ``;
+
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+        buttonEnter.disabled = true;
         displayArray.pop()
         console.log(`popped stringB from array display`, displayArray)
+        updateDisplay();
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
     } else if (operator.length > 0){
-        operatorCheck = false;buttonClear.innerText = `CE`
         operator = '';
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
         displayArray.pop()
         console.log(`popped operator from array display`, displayArray)
+        updateDisplay();
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
     } else if (stringA.length > 0){
-        buttonClear.innerText = `AC`
         stringA = ``;
         operatorCheck = false;
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
         displayArray.pop()
         console.log(`popped stringA from array display`, displayArray)
+        updateDisplay();
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
     }
 
     
+}
+
+function updateDisplay(){
+    if (displayArray[0] === `ERROR-PLEASE CLEAR`){
+        displayArray.splice(1,2);
+    }
+    if (stringA){
+        displayArray[0] = (stringA)
+    }
+    if (operator){
+        displayArray.splice(1,1, operator);
+    }
+    if(stringB){
+        displayArray.splice(2,1, stringB)
+    }
+    calculatorDisplay2.innerText = displayArray.join(" ");
+    clearButtonText();
+}
+
+
+function clearButtonText(){
+    if (displayArray.length > 1){
+        buttonClear.innerText = `CE`
+    }else{
+        buttonClear.innerText = `AC`
+    }
 }
