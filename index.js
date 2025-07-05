@@ -63,7 +63,7 @@ function test(string){
         if (resultEqualToA === true){
             stringA = string;
             resultEqualToA = false;
-            calculatorDisplay.innerText = stringA;
+            // calculatorDisplay.innerText = stringA;
             console.log(`stringA check: `, stringA)
             console.log(string)
 
@@ -78,7 +78,7 @@ function test(string){
 
         } else if (resultEqualToA != true){
             stringA += string;
-            calculatorDisplay.innerText = stringA
+            // calculatorDisplay.innerText = stringA
 
 // +++++++++++++++++++++++++++++++++Test Array Herer ---++++++++++-------------//
             displayArray[0] = stringA;
@@ -98,7 +98,7 @@ function test(string){
     } else if (operatorCheck === true){
         stringB += string;
 
-        calculatorDisplay.innerText = `${stringA} ${operator} ${stringB}`;
+        // calculatorDisplay.innerText = `${stringA} ${operator} ${stringB}`;
         buttonEnter.disabled = false;
 
 
@@ -123,7 +123,7 @@ function operatorSet(operation){
     }
     operator = operation;
     operatorCheck = true;
-    calculatorDisplay.innerText = `${stringA} ${operator} `;
+    // calculatorDisplay.innerText = `${stringA} ${operator} `;
     
 // ----------------------Test Array Here --------------------------------//
     // displayArray.push(operator);
@@ -170,7 +170,7 @@ function executionCheck(){
         stringA =``;
         operator = ``;
         stringB = ``;
-        displayArray[0] = `ERROR-PLEASE CLEAR`;
+        displayArray[0] = `ERR-PLS CLR`;
         // let zero = `ERROR - Cannot Divide By Zero`
         operatorCheck = false;
         buttonEnter.disabled = true;
@@ -254,7 +254,7 @@ function clearButton(){
 }
 
 function updateDisplay(){
-    if (displayArray[0] === `ERROR-PLEASE CLEAR`){
+    if (displayArray[0] === `ERR-PLS CLR`){
         displayArray.splice(1,2);
     }
     if (stringA){
@@ -266,7 +266,7 @@ function updateDisplay(){
     if(stringB){
         displayArray.splice(2,1, stringB)
     }
-    calculatorDisplay2.innerText = displayArray.join(" ");
+    calculatorDisplay.innerText = displayArray.join(" ");
     clearButtonText();
 }
 
